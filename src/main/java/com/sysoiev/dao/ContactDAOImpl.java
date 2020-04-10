@@ -1,6 +1,7 @@
 package com.sysoiev.dao;
 
 import com.sysoiev.model.Contact;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Repository
 public class ContactDAOImpl implements ContactDAO {
     private static final AtomicInteger AUTO_ID = new AtomicInteger(0);
     private static Map<Integer, Contact> contacts = new HashMap<>();
@@ -17,7 +19,7 @@ public class ContactDAOImpl implements ContactDAO {
         Contact contact = new Contact();
         contact.setId(AUTO_ID.getAndIncrement());
         contact.setName("Sergey");
-        contact.setSurname("ver");
+        contact.setSurname("Gorban");
         contact.setPhoneNumber("876-876-876");
         contact.setContactType("friend");
         contacts.put(contact.getId(), contact);
