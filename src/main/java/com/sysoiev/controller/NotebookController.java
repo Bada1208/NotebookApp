@@ -1,35 +1,25 @@
 package com.sysoiev.controller;
 
+import com.sysoiev.dao.ContactDAO;
+import com.sysoiev.dao.ContactDAOImpl;
 import com.sysoiev.model.Contact;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 public class NotebookController {
-    private static Contact contact;
+    private ContactDAO contactDAO = new ContactDAOImpl();
 
-    static {
-        contact = new Contact();
-        contact.setName("Vasia");
-        contact.setSurname("Pupkin");
-        contact.setPhoneNumber("333-333-333");
-        contact.setContactType("friend");
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView allNotes() {
+        List<Contact> notes = contactDAO.allNotes();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("notes");
-        modelAndView.addObject("contact", contact);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public ModelAndView editPage() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("editPage");
+        modelAndView.addObject("notesList", notes);
         return modelAndView;
     }
 
