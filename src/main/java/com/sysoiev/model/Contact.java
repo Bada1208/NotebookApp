@@ -1,10 +1,21 @@
 package com.sysoiev.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "notes")
 public class Contact {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "surname")
     private String surname;
+    @Column(name = "phone_number")
     private String phoneNumber;
+    @Column(name = "contact_type")
     private String contactType;
 
     public int getId() {

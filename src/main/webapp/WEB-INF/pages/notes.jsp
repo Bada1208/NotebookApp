@@ -12,8 +12,8 @@
         <th>id</th>
         <th>name</th>
         <th>surname</th>
-        <th>phoneNumber</th>
-        <th>contactType</th>
+        <th>phone number</th>
+        <th>contact type</th>
     </tr>
     <c:forEach var="contact" items="${notesList}">
         <tr>

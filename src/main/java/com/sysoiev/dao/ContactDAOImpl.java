@@ -1,54 +1,58 @@
 package com.sysoiev.dao;
 
 import com.sysoiev.model.Contact;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class ContactDAOImpl implements ContactDAO {
-    private static final AtomicInteger AUTO_ID = new AtomicInteger(0);
-    private static Map<Integer, Contact> contacts = new HashMap<>();
+    private SessionFactory sessionFactory;
 
-
-    static {
-        Contact contact = new Contact();
-        contact.setId(AUTO_ID.getAndIncrement());
-        contact.setName("Sergey");
-        contact.setSurname("Gorban");
-        contact.setPhoneNumber("876-876-876");
-        contact.setContactType("friend");
-        contacts.put(contact.getId(), contact);
-
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
+
     @Override
+    @Transactional
+    @SuppressWarnings("unchecked")
     public List<Contact> allNotes() {
-        return new ArrayList<>(contacts.values());
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from Contact").list();
     }
 
     @Override
+    @Transactional
     public void add(Contact contact) {
-        contact.setId(AUTO_ID.getAndIncrement());
-        contacts.put(contact.getId(), contact);
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(contact);
     }
 
     @Override
+    @Transactional
     public void delete(Contact contact) {
-        contacts.remove(contact.getId());
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(contact);
     }
 
     @Override
+    @Transactional
     public void edit(Contact contact) {
-        contacts.put(contact.getId(), contact);
+        Session session = sessionFactory.getCurrentSession();
+        session.update(contact);
     }
 
     @Override
+    @Transactional
     public Contact getById(int id) {
-        return contacts.get(id);
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Contact.class, id);
     }
+
 }
